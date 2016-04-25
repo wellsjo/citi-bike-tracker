@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "node-schedule": "^1.1.0",
     "superagent": "^1.8.2",
     "twilio": "^2.9.1"
   }

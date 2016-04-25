@@ -1,30 +1,16 @@
 'use strict'
 
-const fs = require('fs');
-const http = require('superagent');
-const baseurl = 'http://api.citybik.es';
-const citibike = {};
+const citibike = require('./lib/citibike');
+const schedule = require('node-schedule').scheduleJob;
 
-citibike.getNetworks = cb => {
-  http
-    .get(`${baseurl}/networks.json`)
-    .set('Accept', 'application/json')
-    .end((err, res) => {
-      cb(err, res.body);
-    });
-}
+// schedule('* * * * *', _ => {
 
-citibike.getSystem = (system, cb) => {
-  http
-    .get(`${baseurl}/${system}.json`)
-    .set('Accept', 'application/json')
-    .end((err, res) => {
-      cb(err, res.body);
-    });
-}
+  citibike.getStations([209], (err, res) => {
+    console.log(res[0].bikes);
+  });
 
-citibike.getSystem('citi-bike-nyc', (err, data) => {
-  fs.writeFileSync('data.json', JSON.stringify(data, null, 2));
-});
+  citibike.getSystem('citi-bike-nyc', (err, data) => {
 
-module.exports = citibike;
+  });
+
+// });
