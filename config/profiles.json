@@ -1,11 +1,20 @@
 [
   {
+    "user": "wells",
+    "id": 1,
     "phone": "+14136674180",
-    "settings": [
+    "profiles": [
       {
-        "start": "17:00",
-        "end": "19:00",
-        "stations": [301, 57, 193]
+        "start": 1700,
+        "end": 1900,
+        "stations": [301, 57, 193],
+        "threshold": 14
+      },
+      {
+        "start": 700,
+        "end": 900,
+        "stations": [209, 197, 196],
+        "threshold": 14
       }
     ]
   }
