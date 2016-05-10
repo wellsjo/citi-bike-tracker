@@ -1,35 +1,22 @@
 'use strict'
 
-const config = require('./config');
-const users = require('./config/profiles.json');
-const text = require('./lib/text');
+const fs = require('fs');
+const path = require('path');
 const citibike = require('./lib/citibike');
 const schedule = require('node-schedule').scheduleJob;
 
-let sent = false;
+let datasrc = path.resolve(__dirname, 'data', 'data.json');
+let cache = require(datasrc);
 
-schedule('* * * * *', _ => {
-
-  let now = Number([new Date().getHours(), new Date().getMinutes()].join(''));
+// save bike data every 5 minutes
+schedule('*/5 * * * *', _ => {
   citibike.getSystem('citi-bike-nyc', (err, data) => {
-
-    users.forEach(user => {
-
-      user.profiles.forEach(profile => {
-
-        if (profile.start > now || profile.end < now) {
-          return;
-        }
-
-        let stations = data.filter(s => profile.stations.indexOf(s.id) > -1);
-        let bikes = stations.reduce((p, c) => p + c.bikes, 0);
-
-        console.log(bikes + ' bikes left');
-        if (bikes < profile && !sent) {
-          text(bikes + ' bikes left downtown');
-          sent = true;
-        }
-      });
-    });
+    if (err) {
+      console.error(err);
+    } else {
+      cache = cache.concat(data);
+      console.log(Date.now().toJSON(), data.length);
+      fs.writeFileSync(datasrc, JSON.stringify(data));
+    }
   });
 })
