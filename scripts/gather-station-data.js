@@ -2,10 +2,10 @@
 
 const fs = require('fs');
 const path = require('path');
-const citibike = require('./lib/citibike');
+const citibike = require('../lib/citibike');
 const schedule = require('node-schedule').scheduleJob;
 
-let datasrc = path.resolve(__dirname, 'data', 'data.json');
+let datasrc = path.resolve(__dirname, '..', 'data', 'data.json');
 let cache = require(datasrc);
 
 // save bike data every 5 minutes
